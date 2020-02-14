@@ -1,2 +1,0 @@
-Name: Notes App
-Author: Arpit Dalal
