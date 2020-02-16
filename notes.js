@@ -7,11 +7,9 @@ const getNotes = () => {
 
 const addNote = (title, body) => {
     const notes = loadNotesFile()
-    // array.filter() creates an array with the found array objects with the condition
-    // so if title matches > it will create an array with that array objects in duplicateNotes(usually 1)
-    const duplicateNotes = notes.filter((note) => note.title === title)
+    const duplicateNote = notes.find((note) => note.title === title)
 
-    if (duplicateNotes.length === 0) {
+    if (!duplicateNote) {
         notes.push({
             title: title,
             body: body
@@ -37,6 +35,22 @@ const removeNote = (title) => {
     }
 }
 
+const listNotes = () => {
+    const notes = loadNotesFile()
+    console.log(chalk.inverse.bold("Your notes:"))
+    notes.forEach((note) => {console.log(note.title)})
+}
+
+const readNote = (title) => {
+    const notes = loadNotesFile()
+    const selectedNote = notes.find((note) => note.title === title)
+    if(selectedNote) {
+        console.log(chalk.inverse(selectedNote.title)  + "\n" + selectedNote.body)
+    }else {
+        console.log(chalk.bgRed(title + " not found :("))
+    }
+}
+
 const saveNotes = (notes) => {
     const dataJSON = JSON.stringify(notes)
     fs.writeFileSync('notes.json', dataJSON)
@@ -55,5 +69,7 @@ const loadNotesFile = () => {
 module.exports = {
     getNotes:   getNotes,
     addNote:    addNote,
-    removeNote: removeNote
+    removeNote: removeNote,
+    listNotes:  listNotes,
+    readNote:   readNote
 }
